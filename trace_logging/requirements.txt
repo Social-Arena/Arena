@@ -1,0 +1,13 @@
+# No external dependencies required
+# trace_logging uses only Python standard library:
+# - json
+# - logging
+# - pathlib
+# - datetime
+# - contextvars
+# - asyncio
+# - threading
+# - queue
+# - collections
+# - dataclasses
+# - enum
