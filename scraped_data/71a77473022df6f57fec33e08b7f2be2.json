@@ -1,0 +1,25 @@
+{
+  "id": "71a77473022df6f57fec33e08b7f2be2",
+  "platform": "twitter",
+  "data": {
+    "id": "tweet_Innovation_9_1763682247",
+    "text": "Amazing content about #Innovation! This is tweet 9.",
+    "user": {
+      "id": "user_Innovation_9",
+      "username": "user_9",
+      "followers_count": 58733
+    },
+    "created_at": "2025-11-20T18:44:07.219601Z",
+    "like_count": 782,
+    "retweet_count": 29,
+    "reply_count": 50,
+    "quote_count": 18,
+    "public_metrics": {
+      "like_count": 762,
+      "retweet_count": 47,
+      "reply_count": 9,
+      "quote_count": 1
+    }
+  },
+  "scraped_at": "2025-11-20T18:44:07.223493"
+}

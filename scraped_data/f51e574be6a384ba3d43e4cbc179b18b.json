@@ -1,0 +1,25 @@
+{
+  "id": "f51e574be6a384ba3d43e4cbc179b18b",
+  "platform": "twitter",
+  "data": {
+    "id": "tweet_Viral_2_1763682247",
+    "text": "Amazing content about #Viral! This is tweet 2.",
+    "user": {
+      "id": "user_Viral_2",
+      "username": "user_2",
+      "followers_count": 7202
+    },
+    "created_at": "2025-11-20T18:44:07.219612Z",
+    "like_count": 759,
+    "retweet_count": 35,
+    "reply_count": 32,
+    "quote_count": 23,
+    "public_metrics": {
+      "like_count": 738,
+      "retweet_count": 35,
+      "reply_count": 73,
+      "quote_count": 18
+    }
+  },
+  "scraped_at": "2025-11-20T18:44:07.223704"
+}

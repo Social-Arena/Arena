@@ -1,0 +1,25 @@
+{
+  "id": "d77d0a3f98cfa0613b602a6eb7cd4122",
+  "platform": "twitter",
+  "data": {
+    "id": "tweet_AI_4_1763682247",
+    "text": "Amazing content about #AI! This is tweet 4.",
+    "user": {
+      "id": "user_AI_4",
+      "username": "user_4",
+      "followers_count": 92421
+    },
+    "created_at": "2025-11-20T18:44:07.219517Z",
+    "like_count": 589,
+    "retweet_count": 19,
+    "reply_count": 62,
+    "quote_count": 9,
+    "public_metrics": {
+      "like_count": 951,
+      "retweet_count": 68,
+      "reply_count": 19,
+      "quote_count": 24
+    }
+  },
+  "scraped_at": "2025-11-20T18:44:07.221132"
+}
