@@ -1,0 +1,841 @@
+%% ============================================================================
+%% ARENA SYSTEM ARCHITECTURE - MERMAID DIAGRAMS
+%% ============================================================================
+%% This file contains comprehensive architectural diagrams for the Arena
+%% orchestration system - the core control center of Social-Arena.
+%%
+%% Arena is responsible for:
+%% - Managing 100-1000+ concurrent agents
+%% - Orchestrating simulation lifecycle
+%% - Resource allocation and scheduling
+%% - Metrics tracking and viral propagation monitoring
+%% - A/B testing and evolution tracking
+%% ============================================================================
+
+%% ============================================================================
+%% DIAGRAM 1: HIGH-LEVEL SYSTEM ARCHITECTURE
+%% ============================================================================
+%% This diagram shows the overall system architecture with all major components
+%% and their relationships to external systems.
+%% ============================================================================
+
+graph TB
+    subgraph "External Systems"
+        Agent[Agent Module<br/>Creator/Audience/Brand/Moderator<br/>━━━━━━━━━━━━━━━━━━━<br/>• Agent behaviors<br/>• Learning stages<br/>• Action execution]
+        Feed[Feed System<br/>Content Storage & Management<br/>━━━━━━━━━━━━━━━━━━━<br/>• Content database<br/>• Viral tracking<br/>• Feed generation]
+        Recommendation[Recommendation Engine<br/>Content Personalization<br/>━━━━━━━━━━━━━━━━━━━<br/>• User modeling<br/>• Ranking algorithms<br/>• A/B testing]
+        Scrapper[Scrapper System<br/>Real-time Data Collection<br/>━━━━━━━━━━━━━━━━━━━<br/>• Twitter scraping<br/>• Trend detection<br/>• Data aggregation]
+    end
+
+    subgraph "Arena Core Layer"
+        subgraph "Central Orchestration"
+            ArenaManager[<b>ArenaManager</b><br/>Global Coordinator<br/>━━━━━━━━━━━━━━━━━━━<br/>• Agent lifecycle<br/>• Simulation control<br/>• System coordination<br/>• Report generation]
+        end
+        
+        subgraph "Core Components"
+            AgentOrchestrator[<b>AgentOrchestrator</b><br/>━━━━━━━━━━━━━━━━━━━<br/>• Agent creation<br/>• Action orchestration<br/>• Agent evolution<br/>• Feedback handling<br/>• Concurrent execution]
+            
+            SimulationEngine[<b>SimulationEngine</b><br/>━━━━━━━━━━━━━━━━━━━<br/>• Environment state<br/>• Trend management<br/>• Trend shocks<br/>• Session simulation<br/>• Platform metrics]
+        end
+    end
+
+    subgraph "Scheduling & Resource Layer"
+        TaskScheduler[<b>TaskScheduler</b><br/>━━━━━━━━━━━━━━━━━━━<br/>• Task prioritization<br/>• Content creation tasks<br/>• Interaction tasks<br/>• Task allocation<br/>• Deadline management]
+        
+        ResourceManager[<b>ResourceManager</b><br/>━━━━━━━━━━━━━━━━━━━<br/>• Resource allocation<br/>• API rate limiting<br/>• Memory management<br/>• CPU allocation<br/>• Quota enforcement]
+    end
+
+    subgraph "Metrics & Monitoring Layer"
+        ViralityTracker[<b>ViralityTracker</b><br/>━━━━━━━━━━━━━━━━━━━<br/>• Content tracking<br/>• Viral detection<br/>• Pattern analysis<br/>• Propagation chains<br/>• Viral prediction]
+        
+        PerformanceMonitor[<b>PerformanceMonitor</b><br/>━━━━━━━━━━━━━━━━━━━<br/>• System load<br/>• Latency tracking<br/>• Throughput metrics<br/>• Emergency stop<br/>• Health monitoring]
+    end
+
+    subgraph "Experiment Layer"
+        ABTestFramework[<b>ABTestFramework</b><br/>━━━━━━━━━━━━━━━━━━━<br/>• Experiment creation<br/>• Group assignment<br/>• Statistical analysis<br/>• Result evaluation<br/>• Hypothesis testing]
+        
+        EvolutionTracker[<b>EvolutionTracker</b><br/>━━━━━━━━━━━━━━━━━━━<br/>• Strategy evolution<br/>• Mutation tracking<br/>• Fitness monitoring<br/>• Recommendations<br/>• Population stats]
+    end
+
+    subgraph "Configuration & Infrastructure"
+        ArenaConfig[<b>ArenaConfig</b><br/>━━━━━━━━━━━━━━━━━━━<br/>• Agent distribution<br/>• Simulation params<br/>• Resource limits<br/>• Experiment settings<br/>• API rate limits]
+        
+        TraceLogging[<b>Trace Logging System</b><br/>━━━━━━━━━━━━━━━━━━━<br/>• TraceLogger<br/>• TraceContext<br/>• TraceManager<br/>• Log rotation<br/>• Error tracking]
+    end
+
+    %% Arena Manager connections
+    ArenaManager -->|initializes & manages| AgentOrchestrator
+    ArenaManager -->|initializes & manages| SimulationEngine
+    ArenaManager -->|initializes & manages| TaskScheduler
+    ArenaManager -->|initializes & manages| ResourceManager
+    ArenaManager -->|initializes & manages| ViralityTracker
+    ArenaManager -->|initializes & manages| PerformanceMonitor
+    ArenaManager -->|uses configuration| ArenaConfig
+    ArenaManager -->|logs to| TraceLogging
+
+    %% Agent Orchestrator connections
+    AgentOrchestrator -->|creates & manages| Agent
+    AgentOrchestrator -->|receives state from| SimulationEngine
+    AgentOrchestrator -->|logs to| TraceLogging
+    AgentOrchestrator -->|tracks evolution with| EvolutionTracker
+
+    %% Simulation Engine connections
+    SimulationEngine -->|provides environment to| AgentOrchestrator
+    SimulationEngine -->|uses config| ArenaConfig
+    SimulationEngine -->|logs to| TraceLogging
+    SimulationEngine -->|interacts with| Agent
+
+    %% Task Scheduler connections
+    TaskScheduler -->|schedules tasks for| AgentOrchestrator
+    TaskScheduler -->|uses config| ArenaConfig
+    TaskScheduler -->|logs to| TraceLogging
+
+    %% Resource Manager connections
+    ResourceManager -->|allocates resources to| AgentOrchestrator
+    ResourceManager -->|enforces limits from| ArenaConfig
+    ResourceManager -->|logs to| TraceLogging
+
+    %% Virality Tracker connections
+    ViralityTracker -->|tracks actions from| AgentOrchestrator
+    ViralityTracker -->|reports to| ArenaManager
+    ViralityTracker -->|logs to| TraceLogging
+
+    %% Performance Monitor connections
+    PerformanceMonitor -->|monitors| ArenaManager
+    PerformanceMonitor -->|checks emergency stop| ArenaManager
+    PerformanceMonitor -->|uses config| ArenaConfig
+    PerformanceMonitor -->|logs to| TraceLogging
+
+    %% Experiment connections
+    ABTestFramework -->|assigns agents from| AgentOrchestrator
+    ABTestFramework -->|logs to| TraceLogging
+    
+    EvolutionTracker -->|tracks agents from| AgentOrchestrator
+    EvolutionTracker -->|logs to| TraceLogging
+
+    %% External system integrations (dotted lines for external communication)
+    ArenaManager -.->|deploys agents to| Agent
+    ArenaManager -.->|publishes content to| Feed
+    ArenaManager -.->|requests recommendations from| Recommendation
+    ArenaManager -.->|requests data from| Scrapper
+    
+    Agent -.->|action feedback| AgentOrchestrator
+    Feed -.->|content data| SimulationEngine
+    Recommendation -.->|personalized feeds| Agent
+    Scrapper -.->|trending data| SimulationEngine
+
+    %% Styling
+    classDef coreClass fill:#ff6b6b,stroke:#333,stroke-width:3px,color:#fff,font-weight:bold
+    classDef schedulingClass fill:#4ecdc4,stroke:#333,stroke-width:3px,color:#fff,font-weight:bold
+    classDef metricsClass fill:#95e1d3,stroke:#333,stroke-width:3px,color:#000,font-weight:bold
+    classDef experimentClass fill:#f38181,stroke:#333,stroke-width:3px,color:#fff,font-weight:bold
+    classDef configClass fill:#ffd93d,stroke:#333,stroke-width:3px,color:#000,font-weight:bold
+    classDef externalClass fill:#a8e6cf,stroke:#333,stroke-width:3px,color:#000,font-weight:bold
+
+    class ArenaManager,AgentOrchestrator,SimulationEngine coreClass
+    class TaskScheduler,ResourceManager schedulingClass
+    class ViralityTracker,PerformanceMonitor metricsClass
+    class ABTestFramework,EvolutionTracker experimentClass
+    class ArenaConfig,TraceLogging configClass
+    class Agent,Feed,Recommendation,Scrapper externalClass
+
+
+%% ============================================================================
+%% DIAGRAM 2: SIMULATION LIFECYCLE & DATA FLOW
+%% ============================================================================
+%% This sequence diagram shows the complete simulation lifecycle from
+%% initialization through shutdown, including all component interactions.
+%% ============================================================================
+
+sequenceDiagram
+    autonumber
+    participant Config as ArenaConfig
+    participant Manager as ArenaManager
+    participant Orchestrator as AgentOrchestrator
+    participant Engine as SimulationEngine
+    participant Scheduler as TaskScheduler
+    participant Resource as ResourceManager
+    participant Virality as ViralityTracker
+    participant Perf as PerformanceMonitor
+    participant Agent as Agent System
+    participant Logging as TraceLogging
+
+    rect rgb(240, 240, 240)
+        Note over Config,Logging: PHASE 1: INITIALIZATION
+        Config->>Manager: Load configuration
+        Manager->>Logging: Initialize logging system
+        Manager->>Orchestrator: Initialize orchestrator
+        Orchestrator->>Logging: Setup agent factory
+        Manager->>Engine: Initialize simulation engine
+        Engine->>Engine: Generate initial trends
+        Manager->>Scheduler: Initialize task scheduler
+        Manager->>Resource: Initialize resource manager
+        Manager->>Virality: Initialize virality tracker
+        Manager->>Perf: Initialize performance monitor
+        Note over Manager: System ready for agent deployment
+    end
+
+    rect rgb(230, 245, 255)
+        Note over Config,Logging: PHASE 2: AGENT DEPLOYMENT
+        Manager->>Manager: Generate agent configs
+        loop For each agent
+            Manager->>Orchestrator: Deploy agent
+            Orchestrator->>Agent: Create agent instance
+            Agent-->>Orchestrator: Agent initialized
+            Orchestrator->>Resource: Request resources
+            Resource->>Resource: Check availability
+            Resource-->>Orchestrator: Resources allocated
+            Orchestrator->>Logging: Log agent deployment
+        end
+        Note over Manager: All agents deployed and ready
+    end
+
+    rect rgb(255, 250, 230)
+        Note over Config,Logging: PHASE 3: SIMULATION LOOP
+        loop Each Time Step
+            Manager->>Engine: Update environment state
+            Engine->>Engine: Update trends & decay
+            Engine->>Engine: Calculate platform metrics
+            Engine->>Engine: Generate social signals
+            Engine-->>Manager: EnvironmentState
+            
+            Manager->>Orchestrator: Orchestrate agent actions
+            Orchestrator->>Engine: Request current state
+            Engine-->>Orchestrator: Environment state
+            
+            par Concurrent Agent Execution
+                Orchestrator->>Agent: Execute agent 1 action
+                Orchestrator->>Agent: Execute agent 2 action
+                Orchestrator->>Agent: Execute agent N action
+            end
+            
+            Agent-->>Orchestrator: Action results
+            Orchestrator->>Orchestrator: Generate mock feedback
+            Orchestrator->>Agent: Send feedback
+            Orchestrator->>Logging: Log actions
+            Orchestrator-->>Manager: List of agent actions
+            
+            Manager->>Virality: Track virality for step
+            Virality->>Virality: Update content metrics
+            Virality->>Virality: Check viral threshold
+            Virality-->>Manager: Viral metrics
+            
+            Manager->>Perf: Collect metrics
+            Perf->>Perf: Monitor system load
+            Perf->>Perf: Track latency & throughput
+            Perf->>Perf: Check emergency stop condition
+            Perf-->>Manager: Performance metrics
+            
+            Manager->>Logging: Log step results
+            
+            alt Emergency Stop Triggered
+                Perf->>Manager: Emergency stop signal
+                Manager->>Manager: Break simulation loop
+            end
+        end
+        Note over Manager: Simulation loop completed
+    end
+
+    rect rgb(240, 255, 240)
+        Note over Config,Logging: PHASE 4: ANALYSIS & REPORTING
+        Manager->>Orchestrator: Get agent statistics
+        Orchestrator->>Orchestrator: Aggregate agent data
+        Orchestrator-->>Manager: Agent statistics
+        
+        Manager->>Virality: Generate viral report
+        Virality->>Virality: Analyze patterns
+        Virality-->>Manager: Viral propagation report
+        
+        Manager->>Perf: Generate performance report
+        Perf->>Perf: Calculate averages & peaks
+        Perf-->>Manager: Performance report
+        
+        Manager->>Manager: Generate simulation report
+        Manager->>Logging: Log final results
+        Note over Manager: Reports generated
+    end
+
+    rect rgb(255, 240, 240)
+        Note over Config,Logging: PHASE 5: SHUTDOWN
+        Manager->>Manager: Stop simulation
+        Manager->>Orchestrator: Shutdown orchestrator
+        Orchestrator->>Agent: Cleanup agents
+        Orchestrator->>Orchestrator: Clear agent states
+        Manager->>Engine: Shutdown simulation engine
+        Manager->>Logging: Archive logs
+        Note over Manager: System shutdown complete
+    end
+
+
+%% ============================================================================
+%% DIAGRAM 3: DETAILED CLASS ARCHITECTURE
+%% ============================================================================
+%% This class diagram shows the detailed structure of all major classes
+%% including their attributes, methods, and relationships.
+%% ============================================================================
+
+classDiagram
+    class ArenaManager {
+        -config: ArenaConfig
+        -logger: TraceLogger
+        -agent_orchestrator: AgentOrchestrator
+        -simulation_engine: SimulationEngine
+        -task_scheduler: TaskScheduler
+        -resource_manager: ResourceManager
+        -virality_tracker: ViralityTracker
+        -performance_monitor: PerformanceMonitor
+        -agents: Dict~str, Any~
+        -is_initialized: bool
+        -is_running: bool
+        -current_time_step: int
+        -start_time: datetime
+        -simulation_results: Dict
+        +initialize_arena() None
+        +deploy_agent(agent_config) str
+        +deploy_agents(agent_configs) List~str~
+        +run_simulation_step() Dict
+        +run_simulation() Dict
+        +pause_simulation() None
+        +resume_simulation() None
+        +stop_simulation() None
+        +get_current_metrics() Dict
+        +collect_final_metrics() Dict
+        +evaluate_agents() Dict
+        +generate_simulation_report() Dict
+        +shutdown() None
+    }
+    
+    class AgentOrchestrator {
+        -config: ArenaConfig
+        -logger: TraceLogger
+        -agents: Dict~str, Any~
+        -agent_states: Dict~str, Dict~
+        -action_queue: List~Dict~
+        -completed_actions: List~Dict~
+        -agent_metrics: Dict~str, Dict~
+        -is_initialized: bool
+        -agent_classes: Dict
+        -LearningStage: Enum
+        +initialize() None
+        +create_agent(agent_config) str
+        +orchestrate_agent_actions(time_step, env_state) List~Dict~
+        +handle_agent_evolution(agent_id) None
+        +evaluate_all_agents() Dict
+        +get_agent_statistics() Dict
+        +shutdown() None
+        -_setup_agent_factory() None
+        -_execute_agent_action(agent_id, agent, env_state) Any
+        -_generate_mock_feedback(action) Any
+    }
+    
+    class SimulationEngine {
+        -config: ArenaConfig
+        -logger: TraceLogger
+        -current_state: Dict
+        -trend_momentum: Dict~str, float~
+        -platform_health: float
+        -active_trends: List~str~
+        -trend_lifecycle: Dict~str, Dict~
+        -active_sessions: int
+        -is_initialized: bool
+        +initialize() None
+        +update_environment_state() EnvironmentState
+        +inject_trend_shock(trend_data) None
+        +simulate_ranking_pressure() None
+        +simulate_user_sessions() Dict
+        +shutdown() None
+        -_generate_initial_trends() List~str~
+        -_update_trends() None
+        -_generate_new_trend() str
+        -_simulate_audience_activity() Dict
+        -_calculate_platform_metrics() Dict
+        -_generate_recommended_content() List~Dict~
+        -_generate_social_signals() Dict
+    }
+    
+    class TaskScheduler {
+        -config: ArenaConfig
+        -logger: TraceLogger
+        -pending_tasks: List~Task~
+        -assigned_tasks: Dict~str, List~
+        -completed_tasks: List~Task~
+        -task_counter: int
+        +schedule_content_creation(num_tasks) List~Task~
+        +schedule_interactions(num_tasks) List~Task~
+        +prioritize_tasks(tasks) List~Task~
+        +assign_task(task, agent_id) None
+        +complete_task(task_id, success) None
+        +get_pending_tasks(limit) List~Task~
+        +get_agent_tasks(agent_id) List~Task~
+        +get_statistics() Dict
+        -_generate_task_id() str
+    }
+    
+    class Task {
+        +task_id: str
+        +task_type: str
+        +priority: TaskPriority
+        +assigned_agent: str
+        +created_at: datetime
+        +deadline: datetime
+        +parameters: Dict
+        +status: str
+    }
+    
+    class TaskPriority {
+        <<enumeration>>
+        LOW
+        MEDIUM
+        HIGH
+        CRITICAL
+    }
+    
+    class ResourceManager {
+        -config: ArenaConfig
+        -logger: TraceLogger
+        -allocations: Dict~str, ResourceAllocation~
+        -available_memory: int
+        -available_cpu: float
+        -api_counters: Dict~str, int~
+        -api_reset_times: Dict~str, datetime~
+        +allocate_resources(agent_id, task_type) ResourceAllocation
+        +release_resources(agent_id) None
+        +monitor_resource_usage() ResourceUsageReport
+        +enforce_api_limits(platform, endpoint) bool
+        +get_resource_statistics() Dict
+    }
+    
+    class ResourceAllocation {
+        +agent_id: str
+        +memory_mb: int
+        +cpu_cores: float
+        +allocated_at: datetime
+    }
+    
+    class ResourceUsageReport {
+        +total_memory_mb: int
+        +total_cpu_cores: float
+        +agent_count: int
+        +timestamp: datetime
+    }
+    
+    class ViralityTracker {
+        -logger: TraceLogger
+        -content_metrics: Dict~str, Dict~
+        -viral_content: List~str~
+        -propagation_chains: Dict~str, List~
+        -virality_threshold: float
+        +track_step(agent_actions) Dict
+        +track_content_spread(content_id) Dict
+        +analyze_viral_patterns() Dict
+        +predict_virality_potential(content) float
+        +get_current_metrics() Dict
+        +generate_report() Dict
+        -_track_content(content_id, action) None
+        -_get_top_viral_content(limit) List~Dict~
+    }
+    
+    class PerformanceMonitor {
+        -config: ArenaConfig
+        -logger: TraceLogger
+        -system_load_history: deque
+        -latency_history: deque
+        -throughput_history: deque
+        -current_system_load: float
+        -current_latency: float
+        -current_throughput: float
+        -total_actions_processed: int
+        -total_errors: int
+        +collect_metrics() Dict
+        +monitor_agent_performance() Dict
+        +track_system_metrics() Dict
+        +get_current_metrics() Dict
+        +generate_report() Dict
+        +should_emergency_stop() bool
+        +record_action(success) None
+    }
+    
+    class ArenaConfig {
+        +num_agents: int
+        +agent_distribution: Dict~str, int~
+        +simulation_duration: int
+        +time_step_duration: int
+        +max_memory_per_agent: int
+        +max_cpu_per_agent: float
+        +api_rate_limits: Dict~str, int~
+        +enable_ab_testing: bool
+        +experiment_duration: int
+        +metrics_collection_interval: int
+        +trace_log_level: str
+        +trace_dir: Path
+        +feed_storage_dir: Path
+        +enable_evolution: bool
+        +max_concurrent_agents: int
+        +emergency_stop_threshold: float
+        +validate() bool
+        +to_dict() Dict
+        +from_dict(config_dict) ArenaConfig
+    }
+    
+    class ABTestFramework {
+        -logger: TraceLogger
+        -experiments: Dict~str, Experiment~
+        -experiment_counter: int
+        +create_experiment(config) Experiment
+        +start_experiment(experiment_id) None
+        +stop_experiment(experiment_id) None
+        +assign_agents_to_groups(experiment_id, agent_ids) Dict
+        +record_agent_metric(experiment_id, agent_id, metric, value) None
+        +analyze_experiment_results(experiment_id) ExperimentMetrics
+        +get_experiment_status(experiment_id) Dict
+        -_calculate_p_value(experiment) float
+        -_calculate_effect_size(experiment) float
+        -_generate_experiment_id() str
+    }
+    
+    class Experiment {
+        +id: str
+        +config: ExperimentConfig
+        +status: ExperimentStatus
+        +control_group: List~str~
+        +treatment_group: List~str~
+        +control_metrics: Dict
+        +treatment_metrics: Dict
+        +start_time: datetime
+        +end_time: datetime
+        +assign_to_group(agent_id) str
+        +record_metric(agent_id, metric_name, value) None
+    }
+    
+    class ExperimentConfig {
+        +name: str
+        +hypothesis: str
+        +control_strategy: str
+        +treatment_strategy: str
+        +split_ratio: float
+        +duration: timedelta
+        +min_sample_size: int
+        +significance_level: float
+    }
+    
+    class EvolutionTracker {
+        -logger: TraceLogger
+        -evolution_histories: Dict~str, EvolutionHistory~
+        -successful_mutations: List~SuccessfulMutation~
+        -fitness_history: Dict~str, List~
+        -generation_count: int
+        +track_strategy_evolution(agent_id) EvolutionHistory
+        +record_evolution_event(agent_id, event_type, old_strategy, new_strategy, fitness_before, fitness_after) None
+        +identify_successful_mutations(min_improvement) List~SuccessfulMutation~
+        +recommend_evolution_directions(agent_id) List~EvolutionDirection~
+        +get_population_statistics() Dict
+        +advance_generation() None
+        -_calculate_strategy_diff(old, new) Dict
+        -_find_population_best_practices() Dict
+    }
+    
+    class EvolutionHistory {
+        +agent_id: str
+        +events: List~EvolutionEvent~
+        +successful_mutations: List~SuccessfulMutation~
+        +current_fitness: float
+    }
+    
+    class TraceLogging {
+        <<module>>
+        +get_logger(name, component) TraceLogger
+        +configure_logging(config) None
+        +TraceContext
+        +TraceManager
+    }
+
+    %% Composition relationships (Arena Manager owns these components)
+    ArenaManager "1" *-- "1" AgentOrchestrator : manages
+    ArenaManager "1" *-- "1" SimulationEngine : manages
+    ArenaManager "1" *-- "1" TaskScheduler : manages
+    ArenaManager "1" *-- "1" ResourceManager : manages
+    ArenaManager "1" *-- "1" ViralityTracker : manages
+    ArenaManager "1" *-- "1" PerformanceMonitor : manages
+    
+    %% Dependency relationships (uses configuration)
+    ArenaManager "1" ..> "1" ArenaConfig : uses
+    AgentOrchestrator "1" ..> "1" ArenaConfig : uses
+    SimulationEngine "1" ..> "1" ArenaConfig : uses
+    TaskScheduler "1" ..> "1" ArenaConfig : uses
+    ResourceManager "1" ..> "1" ArenaConfig : uses
+    PerformanceMonitor "1" ..> "1" ArenaConfig : uses
+    
+    %% Association relationships
+    TaskScheduler "1" --> "*" Task : manages
+    Task --> TaskPriority : uses
+    ResourceManager "1" --> "*" ResourceAllocation : tracks
+    ResourceManager --> ResourceUsageReport : generates
+    
+    %% Experiment framework relationships
+    ABTestFramework "1" --> "*" Experiment : manages
+    Experiment --> ExperimentConfig : configured by
+    AgentOrchestrator ..> EvolutionTracker : tracks with
+    EvolutionTracker --> EvolutionHistory : maintains
+    
+    %% Logging relationships (all components use logging)
+    ArenaManager ..> TraceLogging : logs to
+    AgentOrchestrator ..> TraceLogging : logs to
+    SimulationEngine ..> TraceLogging : logs to
+    TaskScheduler ..> TraceLogging : logs to
+    ResourceManager ..> TraceLogging : logs to
+    ViralityTracker ..> TraceLogging : logs to
+    PerformanceMonitor ..> TraceLogging : logs to
+    ABTestFramework ..> TraceLogging : logs to
+    EvolutionTracker ..> TraceLogging : logs to
+
+
+%% ============================================================================
+%% DIAGRAM 4: MODULE DEPENDENCY GRAPH
+%% ============================================================================
+%% This diagram shows the directory structure and module dependencies.
+%% ============================================================================
+
+graph LR
+    subgraph "Arena Package"
+        subgraph "core/"
+            CoreInit[__init__.py]
+            ArenaManagerMod[arena_manager.py]
+            AgentOrchestratorMod[agent_orchestrator.py]
+            SimulationEngineMod[simulation_engine.py]
+        end
+        
+        subgraph "config/"
+            ConfigInit[__init__.py]
+            ArenaConfigMod[arena_config.py]
+        end
+        
+        subgraph "scheduling/"
+            SchedulingInit[__init__.py]
+            TaskSchedulerMod[task_scheduler.py]
+            ResourceManagerMod[resource_manager.py]
+        end
+        
+        subgraph "metrics/"
+            MetricsInit[__init__.py]
+            ViralityTrackerMod[virality_tracker.py]
+            PerformanceMonitorMod[performance_monitor.py]
+        end
+        
+        subgraph "experiments/"
+            ExperimentsInit[__init__.py]
+            ABTestingMod[ab_testing.py]
+            EvolutionTrackerMod[evolution_tracker.py]
+        end
+        
+        subgraph "trace_logging/"
+            TraceInit[__init__.py]
+            LoggerMod[logger.py]
+            ConfigMod[config.py]
+            ContextMod[context.py]
+            ManagerMod[manager.py]
+        end
+        
+        subgraph "examples/"
+            SimpleSimulation[simple_simulation.py]
+            FullSimulation[full_simulation_example.py]
+            FullIntegration[full_integration_example.py]
+        end
+        
+        subgraph "tests/"
+            TestArena[test_arena_basic.py]
+        end
+    end
+
+    %% Dependencies from arena_manager
+    ArenaManagerMod --> ArenaConfigMod
+    ArenaManagerMod --> AgentOrchestratorMod
+    ArenaManagerMod --> SimulationEngineMod
+    ArenaManagerMod --> TaskSchedulerMod
+    ArenaManagerMod --> ResourceManagerMod
+    ArenaManagerMod --> ViralityTrackerMod
+    ArenaManagerMod --> PerformanceMonitorMod
+    ArenaManagerMod --> TraceInit
+
+    %% Dependencies from agent_orchestrator
+    AgentOrchestratorMod --> ArenaConfigMod
+    AgentOrchestratorMod --> TraceInit
+
+    %% Dependencies from simulation_engine
+    SimulationEngineMod --> ArenaConfigMod
+    SimulationEngineMod --> TraceInit
+
+    %% Dependencies from scheduling
+    TaskSchedulerMod --> ArenaConfigMod
+    TaskSchedulerMod --> TraceInit
+    ResourceManagerMod --> ArenaConfigMod
+    ResourceManagerMod --> TraceInit
+
+    %% Dependencies from metrics
+    ViralityTrackerMod --> TraceInit
+    PerformanceMonitorMod --> ArenaConfigMod
+    PerformanceMonitorMod --> TraceInit
+
+    %% Dependencies from experiments
+    ABTestingMod --> TraceInit
+    EvolutionTrackerMod --> TraceInit
+
+    %% Dependencies from examples
+    FullIntegration --> ArenaManagerMod
+    FullIntegration --> ArenaConfigMod
+    FullSimulation --> ArenaManagerMod
+    FullSimulation --> ArenaConfigMod
+    SimpleSimulation --> ArenaManagerMod
+    SimpleSimulation --> ArenaConfigMod
+
+    %% Dependencies from tests
+    TestArena --> ArenaManagerMod
+    TestArena --> ArenaConfigMod
+
+    %% Styling
+    classDef coreStyle fill:#ff6b6b,stroke:#333,stroke-width:2px,color:#fff
+    classDef configStyle fill:#ffd93d,stroke:#333,stroke-width:2px,color:#000
+    classDef schedStyle fill:#4ecdc4,stroke:#333,stroke-width:2px,color:#fff
+    classDef metricsStyle fill:#95e1d3,stroke:#333,stroke-width:2px,color:#000
+    classDef expStyle fill:#f38181,stroke:#333,stroke-width:2px,color:#fff
+    classDef logStyle fill:#dfe6e9,stroke:#333,stroke-width:2px,color:#000
+    classDef exampleStyle fill:#a8e6cf,stroke:#333,stroke-width:2px,color:#000
+
+    class ArenaManagerMod,AgentOrchestratorMod,SimulationEngineMod coreStyle
+    class ArenaConfigMod,ConfigInit configStyle
+    class TaskSchedulerMod,ResourceManagerMod schedStyle
+    class ViralityTrackerMod,PerformanceMonitorMod metricsStyle
+    class ABTestingMod,EvolutionTrackerMod expStyle
+    class TraceInit,LoggerMod,ConfigMod,ContextMod,ManagerMod logStyle
+    class SimpleSimulation,FullSimulation,FullIntegration,TestArena exampleStyle
+
+
+%% ============================================================================
+%% DIAGRAM 5: TRACE LOGGING ARCHITECTURE
+%% ============================================================================
+%% This diagram shows the comprehensive trace logging system structure.
+%% ============================================================================
+
+graph TB
+    subgraph "Trace Logging System"
+        subgraph "Core Logging Components"
+            GetLogger[get_logger<br/>━━━━━━━━━━━━━━━<br/>Factory function for<br/>creating loggers]
+            TraceLogger[TraceLogger<br/>━━━━━━━━━━━━━━━<br/>Custom logger with<br/>structured logging]
+            LogConfig[LogConfig<br/>━━━━━━━━━━━━━━━<br/>Logging configuration<br/>settings]
+        end
+        
+        subgraph "Context Management"
+            TraceContext[TraceContext<br/>━━━━━━━━━━━━━━━<br/>Request/session<br/>context tracking]
+            ContextManager[get_trace_context<br/>━━━━━━━━━━━━━━━<br/>Context retrieval]
+        end
+        
+        subgraph "Specialized Trace Managers"
+            TraceManager[TraceManager<br/>━━━━━━━━━━━━━━━<br/>Base trace manager]
+            AgentTraceManager[AgentTraceManager<br/>━━━━━━━━━━━━━━━<br/>Agent-specific tracing]
+            SimTraceManager[SimulationTraceManager<br/>━━━━━━━━━━━━━━━<br/>Simulation tracing]
+            PerfTraceManager[PerformanceTraceManager<br/>━━━━━━━━━━━━━━━<br/>Performance tracing]
+            ExpTraceManager[ExperimentTraceManager<br/>━━━━━━━━━━━━━━━<br/>Experiment tracing]
+        end
+    end
+    
+    subgraph "Log Destinations"
+        subgraph "File System Structure"
+            TraceDir[trace/<br/>━━━━━━━━━━━━━━━<br/>Root trace directory]
+            
+            ArenaLogs[arena/<br/>• manager/<br/>• orchestrator/<br/>• simulation/<br/>• scheduler/]
+            
+            AgentLogs[agents/<br/>• creators/<br/>• audience/<br/>• brands/<br/>• moderators/]
+            
+            ExpLogs[experiments/<br/>• ab_tests/<br/>• evolution/]
+            
+            MetricLogs[metrics/<br/>• virality/<br/>• performance/]
+            
+            ErrorLogs[errors/<br/>• all_errors.log<br/>• critical.log]
+            
+            ArchivedLogs[archived/<br/>• rotated logs<br/>• compressed]
+        end
+    end
+    
+    subgraph "Arena Components Using Logging"
+        AM[ArenaManager]
+        AO[AgentOrchestrator]
+        SE[SimulationEngine]
+        TS[TaskScheduler]
+        RM[ResourceManager]
+        VT[ViralityTracker]
+        PM[PerformanceMonitor]
+        AB[ABTestFramework]
+        ET[EvolutionTracker]
+    end
+
+    %% Logging component relationships
+    GetLogger --> TraceLogger
+    TraceLogger --> LogConfig
+    TraceLogger --> TraceContext
+    TraceContext --> ContextManager
+    
+    TraceManager --> AgentTraceManager
+    TraceManager --> SimTraceManager
+    TraceManager --> PerfTraceManager
+    TraceManager --> ExpTraceManager
+
+    %% Arena components use logging
+    AM --> GetLogger
+    AO --> GetLogger
+    SE --> GetLogger
+    TS --> GetLogger
+    RM --> GetLogger
+    VT --> GetLogger
+    PM --> GetLogger
+    AB --> GetLogger
+    ET --> GetLogger
+
+    %% Loggers write to file system
+    TraceLogger --> TraceDir
+    TraceDir --> ArenaLogs
+    TraceDir --> AgentLogs
+    TraceDir --> ExpLogs
+    TraceDir --> MetricLogs
+    TraceDir --> ErrorLogs
+    TraceDir --> ArchivedLogs
+
+    %% Specialized trace managers write to specific locations
+    AgentTraceManager --> AgentLogs
+    SimTraceManager --> ArenaLogs
+    PerfTraceManager --> MetricLogs
+    ExpTraceManager --> ExpLogs
+
+    classDef logCoreStyle fill:#74b9ff,stroke:#333,stroke-width:2px,color:#fff
+    classDef contextStyle fill:#a29bfe,stroke:#333,stroke-width:2px,color:#fff
+    classDef managerStyle fill:#fd79a8,stroke:#333,stroke-width:2px,color:#fff
+    classDef fileStyle fill:#fdcb6e,stroke:#333,stroke-width:2px,color:#000
+    classDef componentStyle fill:#55efc4,stroke:#333,stroke-width:2px,color:#000
+
+    class GetLogger,TraceLogger,LogConfig logCoreStyle
+    class TraceContext,ContextManager contextStyle
+    class TraceManager,AgentTraceManager,SimTraceManager,PerfTraceManager,ExpTraceManager managerStyle
+    class TraceDir,ArenaLogs,AgentLogs,ExpLogs,MetricLogs,ErrorLogs,ArchivedLogs fileStyle
+    class AM,AO,SE,TS,RM,VT,PM,AB,ET componentStyle
+
+
+%% ============================================================================
+%% END OF ARENA STRUCTURE DOCUMENTATION
+%% ============================================================================
+%% 
+%% Legend:
+%% ━━━━━━━━━━━━━━━ : Visual separator in node descriptions
+%% *-- : Composition (strong ownership)
+%% ..> : Dependency (uses)
+%% --> : Association (reference)
+%% -.-> : External communication (dotted line)
+%%
+%% Color Coding:
+%% • Red (#ff6b6b): Core orchestration components
+%% • Teal (#4ecdc4): Scheduling & resource management
+%% • Light Green (#95e1d3): Metrics & monitoring
+%% • Pink (#f38181): Experiment framework
+%% • Yellow (#ffd93d): Configuration & infrastructure
+%% • Green (#a8e6cf): External systems
+%% • Blue variants: Logging system components
+%%
+%% ============================================================================
+
