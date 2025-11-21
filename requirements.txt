@@ -1,0 +1,27 @@
+# Arena Module Requirements
+
+# Core dependencies
+python>=3.9
+
+# Async support (built-in)
+# asyncio
+
+# Agent module (local dependency)
+# Install with: pip install -e ../Agent
+
+# Feed module (local dependency)
+# Install with: pip install -e ../Feed
+
+# Data processing
+numpy>=1.21.0
+
+# Testing
+pytest>=7.3.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+
+# Code quality
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.0.0
+

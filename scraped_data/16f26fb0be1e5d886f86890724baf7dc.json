@@ -1,0 +1,25 @@
+{
+  "id": "16f26fb0be1e5d886f86890724baf7dc",
+  "platform": "twitter",
+  "data": {
+    "id": "tweet_Innovation_4_1763682247",
+    "text": "Amazing content about #Innovation! This is tweet 4.",
+    "user": {
+      "id": "user_Innovation_4",
+      "username": "user_4",
+      "followers_count": 78063
+    },
+    "created_at": "2025-11-20T18:44:07.219584Z",
+    "like_count": 819,
+    "retweet_count": 78,
+    "reply_count": 73,
+    "quote_count": 5,
+    "public_metrics": {
+      "like_count": 159,
+      "retweet_count": 89,
+      "reply_count": 27,
+      "quote_count": 5
+    }
+  },
+  "scraped_at": "2025-11-20T18:44:07.223143"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "f9de32a1260db710e36dd8cb86105af3",
+  "platform": "twitter",
+  "data": {
+    "id": "tweet_Viral_4_1763682247",
+    "text": "Amazing content about #Viral! This is tweet 4.",
+    "user": {
+      "id": "user_Viral_4",
+      "username": "user_4",
+      "followers_count": 44750
+    },
+    "created_at": "2025-11-20T18:44:07.219618Z",
+    "like_count": 302,
+    "retweet_count": 177,
+    "reply_count": 38,
+    "quote_count": 30,
+    "public_metrics": {
+      "like_count": 193,
+      "retweet_count": 78,
+      "reply_count": 45,
+      "quote_count": 12
+    }
+  },
+  "scraped_at": "2025-11-20T18:44:07.223835"
+}

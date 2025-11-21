@@ -1,0 +1,25 @@
+{
+  "id": "c6b684bf525e8246aedae690c57063ad",
+  "platform": "twitter",
+  "data": {
+    "id": "tweet_Tech_8_1763682247",
+    "text": "Amazing content about #Tech! This is tweet 8.",
+    "user": {
+      "id": "user_Tech_8",
+      "username": "user_8",
+      "followers_count": 38452
+    },
+    "created_at": "2025-11-20T18:44:07.219564Z",
+    "like_count": 848,
+    "retweet_count": 174,
+    "reply_count": 82,
+    "quote_count": 27,
+    "public_metrics": {
+      "like_count": 799,
+      "retweet_count": 38,
+      "reply_count": 83,
+      "quote_count": 31
+    }
+  },
+  "scraped_at": "2025-11-20T18:44:07.222732"
+}

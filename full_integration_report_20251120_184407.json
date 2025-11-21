@@ -1,0 +1,115 @@
+{
+  "simulation_info": {
+    "config": {
+      "num_agents": 15,
+      "agent_distribution": {
+        "creator": 5,
+        "audience": 7,
+        "brand": 2,
+        "moderator": 1
+      },
+      "simulation_duration": 1,
+      "time_step_duration": 60,
+      "max_memory_per_agent": 512,
+      "max_cpu_per_agent": 0.5,
+      "api_rate_limits": {
+        "twitter": 100,
+        "feed_system": 1000
+      },
+      "enable_ab_testing": true,
+      "experiment_duration": 24,
+      "metrics_collection_interval": 10,
+      "dashboard_update_interval": 5,
+      "trace_log_level": "INFO",
+      "trace_storage_days": 30,
+      "trace_dir": "trace",
+      "feed_storage_dir": "feeds",
+      "real_time_mode": false,
+      "acceleration_factor": 10,
+      "enable_evolution": true,
+      "evolution_check_interval": 100,
+      "max_concurrent_agents": 1000,
+      "max_actions_per_step": 10000,
+      "emergency_stop_threshold": 0.9
+    },
+    "start_time": "2025-11-20T18:44:07.249310",
+    "end_time": "2025-11-20T18:44:07.249311",
+    "duration_seconds": 600,
+    "total_steps": 10
+  },
+  "agent_statistics": {
+    "total_agents": 15,
+    "active_agents": 15,
+    "total_actions": 105,
+    "by_role": {
+      "creator": {
+        "count": 5,
+        "total_actions": 5
+      },
+      "audience": {
+        "count": 7,
+        "total_actions": 70
+      },
+      "brand": {
+        "count": 2,
+        "total_actions": 20
+      },
+      "moderator": {
+        "count": 1,
+        "total_actions": 10
+      }
+    }
+  },
+  "viral_propagation": {
+    "total_content_tracked": 0,
+    "viral_content_count": 0,
+    "viral_rate": 0.0,
+    "average_virality_score": 0.0,
+    "patterns": {
+      "total_viral": 0,
+      "patterns": []
+    },
+    "top_viral_content": []
+  },
+  "performance_analysis": {
+    "summary": {
+      "total_actions_processed": 0,
+      "total_errors": 0,
+      "error_rate": 0.0
+    },
+    "system_load": {
+      "average": 0.46327617949068695,
+      "peak": 0.6877082447794309,
+      "current": 0.4149138245377124
+    },
+    "latency": {
+      "average_ms": 46.621699524599116,
+      "peak_ms": 92.50355544294463,
+      "current_ms": 24.046344839694292
+    },
+    "throughput": {
+      "average_per_sec": 626.2987061107625,
+      "peak_per_sec": 959.4988731327079,
+      "current_per_sec": 343.88147332605905
+    }
+  },
+  "summary": {
+    "total_agent_actions": 0,
+    "total_viral_content": 0,
+    "average_step_duration_seconds": 0.0,
+    "actions_per_second": 0.0
+  },
+  "integration_metrics": {
+    "scrapper": {
+      "total_scraped": 50,
+      "by_platform": {
+        "twitter": 50
+      }
+    },
+    "recommendation": {
+      "total_requests": 3,
+      "average_latency_ms": 5.189339319864909,
+      "cache_size": 3
+    }
+  }
+}

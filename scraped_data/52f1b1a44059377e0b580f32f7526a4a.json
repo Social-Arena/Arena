@@ -1,0 +1,25 @@
+{
+  "id": "52f1b1a44059377e0b580f32f7526a4a",
+  "platform": "twitter",
+  "data": {
+    "id": "tweet_Tech_0_1763682247",
+    "text": "Amazing content about #Tech! This is tweet 0.",
+    "user": {
+      "id": "user_Tech_0",
+      "username": "user_0",
+      "followers_count": 90951
+    },
+    "created_at": "2025-11-20T18:44:07.219538Z",
+    "like_count": 211,
+    "retweet_count": 183,
+    "reply_count": 36,
+    "quote_count": 47,
+    "public_metrics": {
+      "like_count": 141,
+      "retweet_count": 85,
+      "reply_count": 53,
+      "quote_count": 35
+    }
+  },
+  "scraped_at": "2025-11-20T18:44:07.221579"
+}
