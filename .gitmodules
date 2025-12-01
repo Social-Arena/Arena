@@ -1,0 +1,9 @@
+[submodule "external/Recommendation"]
+	path = external/Recommendation
+	url = https://github.com/Social-Arena/Recommendation.git
+[submodule "external/Feed"]
+	path = external/Feed
+	url = https://github.com/Social-Arena/Feed.git
+[submodule "external/Agent"]
+	path = external/Agent
+	url = https://github.com/Social-Arena/Agent.git
