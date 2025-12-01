@@ -6,7 +6,7 @@ This package integrates:
 - `feed`: Twitter-style Pydantic data models
 - `recommendation`: Centralized recommendation system
 
-Arena provides a high-level simulation facade built from the
+Arena provides a CLI-driven simulation built from the
 `external/Agent/examples/simple_simulation.py` example.
 """
 
@@ -16,15 +16,15 @@ from .config import (
     ArenaSimulationConfig,
     ArenaConfig,
 )
-from .simulation import ArenaSimulation, ArenaRunResult
+from .cli import ArenaSimulationCLI, CLISimulationResult
 
 __all__ = [
     "ArenaAgentConfig",
     "ArenaLLMConfig",
     "ArenaSimulationConfig",
     "ArenaConfig",
-    "ArenaSimulation",
-    "ArenaRunResult",
+    "ArenaSimulationCLI",
+    "CLISimulationResult",
 ]
 
 

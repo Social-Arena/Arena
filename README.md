@@ -19,27 +19,45 @@ but upgraded to:
 
 ### Installation
 
-Install Arena and its three dependencies via pip:
+#### Option 1: Install from GitHub (recommended for users)
 
 ```bash
-pip install "arena @ git+https://github.com/Social-Arena/Arena.git"
+pip install "arena @ git+https://github.com/Social-Arena/Arena.git@dev"
 ```
 
-This will also install:
+This will also install the `dev` branches of:
 
-- `agent @ git+https://github.com/Social-Arena/Agent.git`
-- `feed @ git+https://github.com/Social-Arena/Feed.git`
-- `recommendation @ git+https://github.com/Social-Arena/Recommendation.git`
+- `agent @ git+https://github.com/Social-Arena/Agent.git@dev`
+- `feed @ git+https://github.com/Social-Arena/Feed.git@dev`
+- `recommendation @ git+https://github.com/Social-Arena/Recommendation.git@dev`
+
+#### Option 2: Local development with submodules
 
 If you are working from this repository with submodules checked out:
 
 ```bash
-cd /Users/access/Social-Arena/Arena
+# Clone the repository
+git clone https://github.com/Social-Arena/Arena.git
+cd Arena
+
+# Initialize and update submodules
+git submodule update --init --recursive
+
+# Checkout dev branch for each submodule
+cd external/Feed && git checkout dev && cd ../..
+cd external/Recommendation && git checkout dev && cd ../..
+cd external/Agent && git checkout dev && cd ../..
+
+# Set up virtual environment
 python -m venv venv
 source venv/bin/activate
+
+# Install dependencies from local submodules (dev branches)
 pip install -e external/Feed
 pip install -e external/Recommendation
 pip install -e external/Agent
+
+# Install Arena itself
 pip install -e .
 ```
 
@@ -47,89 +65,113 @@ pip install -e .
 
 ### Quick Start
 
-1. **Start an LLM host** (from the `agent` package) in one terminal:
+#### 1. Set up your API keys
+
+Create a `.env` file in the Arena root directory:
+
+```bash
+# Copy the template from Agent submodule
+cp external/Agent/env.template .env
+
+# Edit .env and add your API key
+# OPENAI_API_KEY=your_actual_openai_key_here
+# or
+# ANTHROPIC_API_KEY=your_actual_anthropic_key_here
+```
+
+#### 2. Start an LLM host
+
+In one terminal, start the agent LLM host:
 
 ```bash
 source venv/bin/activate
-agent-host --provider openai --port 8000
+
+# Load .env and start OpenAI host
+export $(cat .env | grep -v '^#' | xargs)
+python -m agent --provider openai --port 8000
+
+# Or for Anthropic/Claude:
+# python -m agent --provider anthropic --port 8000
 ```
 
-2. **Run an Arena simulation** in another terminal:
+#### 3. Run an Arena simulation
 
-```python
-import asyncio
-
-from arena import (
-    ArenaAgentConfig,
-    ArenaConfig,
-    ArenaSimulation,
-)
-
-
-async def main() -> None:
-    config = ArenaConfig(
-        agents=[
-            ArenaAgentConfig(agent_id="agent_a", username="alice", bio="Tech enthusiast"),
-            ArenaAgentConfig(agent_id="agent_b", username="bob", bio="Crypto investor"),
-            ArenaAgentConfig(agent_id="agent_c", username="carol", bio="AI researcher"),
-        ],
-    )
-
-    sim = ArenaSimulation(config=config)
-    result = await sim.run()
-    print("Simulation cache:", result.cache_dir)
-    print("Recommendation stats:", result.recommendation_stats)
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+```bash
+source venv/bin/activate
+python arena.py -n_of_agents 10 -post_per_day 5 -days_of_simulations 5
 ```
 
-This will:
+**CLI Arguments:**
+- `-n_of_agents`: Number of agents to create (default: 10)
+- `-post_per_day`: Posts each agent creates per day (default: 5)
+- `-days_of_simulations`: Number of days to simulate (default: 5)
+- `-fetch_per_day`: Posts each agent fetches from recommendation system per day (default: 10)
+- `-explore_ratio`: Exploration ratio for recommendations (default: 0.2)
+- `-output`: Output directory (default: `cache/arena_output_TIMESTAMP`)
 
-- Create three agents
-- Run a multi-day simulation (defaults: 30 days, 3 posts/agent/day)
-- Use `CentralizedRecommendationSystem` + `BalancedStrategy`
-- Save results under `examples/cache/sim_TIMESTAMP/` (feeds, agents, social graph, actions, stats)
+**Output Structure:**
+```
+cache/arena_output_20241201_123456/
+├── agents/           # Individual agent cache files per day
+│   ├── agent_000_day000.json  # Initial state
+│   ├── agent_000_day001.json  # After day 1
+│   ├── agent_000_day002.json  # After day 2
+│   └── ...
+├── feeds/            # All feeds created during simulation
+│   └── all_feeds.json
+└── recommendation/   # Recommendation mappings and state
+    ├── agent_000_day001_mapping.json  # What feeds were recommended to each agent
+    ├── agent_001_day001_mapping.json
+    └── recommendation_state.json       # Final recommendation system state
+```
+
+**What happens during simulation:**
+
+Each day:
+1. **Morning**: Each agent creates `post_per_day` posts → ingested into recommendation system
+2. **Afternoon**: Each agent fetches `fetch_per_day` posts from recommendation system
+3. **Decision**: LLM decides what action to take (like, reply, follow, idle)
+4. **Action**: Agent executes the action and updates state
+5. **Evening**: Agent states saved to `agents/` folder
+
+After all days:
+- All feeds saved to `feeds/all_feeds.json`
+- Recommendation mappings show which feeds were sent to which agents
+- Final recommendation system state saved
+
+**Example:**
+With 10 agents, 5 posts/day, 5 days:
+- **Agents folder**: 10 agents × 6 states (initial + 5 days) = 60 JSON files
+- **Feeds folder**: 10 agents × 5 posts/day × 5 days = 250+ feeds (plus replies)
+- **Recommendation folder**: Daily mappings + final state
 
 ---
 
-### Configuration
-
-Arena uses Pydantic models for all configuration (`arena.config`):
-
-- `ArenaAgentConfig`: agent_id, username, bio
-- `ArenaLLMConfig`: base_url, api_key, model, temperature, max_tokens
-- `ArenaSimulationConfig`: num_days, posts_per_agent_per_day, max_feeds_per_agent, explore_ratio, cache_root
-- `ArenaConfig`: ties agents + llm + simulation together
-
-You can construct these directly in Python or load them however you like
-before passing into `ArenaSimulation`.
-
----
-
-### Internal Architecture
+### Architecture
 
 ```text
 ┌───────────────────────────────────────────┐
-│                ArenaSimulation            │
+│           ArenaSimulationCLI              │
 │   (Orchestrates Agent + Feed + RecSys)   │
 └───────────────┬──────────────────────────┘
                 │
       ┌─────────▼─────────┐
       │ CentralizedRecommendationSystem │  recommendation
+      │     + BalancedStrategy           │
       └─────────┬─────────┘
                 │
       ┌─────────▼─────────┐
-      │       Agents       │  agent.Agent (Pydantic)
+      │    N Agents        │  agent.Agent (Pydantic)
       └─────────┬─────────┘
                 │
       ┌─────────▼─────────┐
-      │    Feeds (Pydantic)│  feed.Feed
+      │  Feeds (Pydantic)  │  feed.Feed
       └────────────────────┘
 ```
 
 For the underlying recommendation algorithm details, see the
 Recommendation repository README: `https://github.com/Social-Arena/Recommendation`.
+
+---
 
 
