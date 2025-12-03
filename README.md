@@ -1,19 +1,26 @@
-## Social Arena - Arena Orchestrator
+# Arena - Social Arena Orchestrator
 
-Arena is the **integration layer** that connects the three core Social Arena
-packages into a single, configurable simulation:
+**Arena** is the integration layer that orchestrates the three core Social Arena packages into a complete, configurable social media simulation system.
 
-- **Agent**: AI agents with 9 fundamental social actions (`agent` package)
-- **Feed**: Twitter-style Pydantic data models (`feed` package)
-- **Recommendation**: Centralized recommendation system (`recommendation` package, Twitter-style algorithm)  
-  (see the Recommendation README for details: `https://github.com/Social-Arena/Recommendation`).
+## Overview
 
-Arena is built directly from the example in `external/Agent/examples/simple_simulation.py`,
-but upgraded to:
+Arena connects:
+- **[Agent](https://github.com/Social-Arena/Agent)** - AI agents with 9 fundamental social actions (post, reply, retweet, quote, like, unlike, follow, unfollow, decide)
+- **[Feed](https://github.com/Social-Arena/Feed)** - Twitter-style Pydantic data models for posts, entities, and metrics
+- **[Recommendation](https://github.com/Social-Arena/Recommendation)** - Centralized recommendation system with multiple ranking strategies (Twitter-style algorithm)
 
-- Use the real `CentralizedRecommendationSystem` + `BalancedStrategy`
-- Use `feed.Feed` Pydantic models throughout the feed pool
-- Provide a configurable, reusable Python API
+Arena provides a **CLI-driven simulation** that:
+- Creates N agents with diverse profiles
+- Runs multi-day simulations where agents post, react, and interact
+- Uses LLM (OpenAI/Anthropic) to drive agent decision-making
+- Tracks recommendation mappings (which feeds were shown to which agents)
+- Saves structured output in separate folders for agents, feeds, and recommendations
+
+Built from `external/Agent/examples/simple_simulation.py` but upgraded to:
+- Use real `CentralizedRecommendationSystem` + `BalancedStrategy` from the recommendation package
+- Use `feed.Feed` Pydantic models throughout
+- Provide structured, analyzable output
+- Support configurable simulation parameters via CLI
 
 ---
 
@@ -83,16 +90,43 @@ cp external/Agent/env.template .env
 
 In one terminal, start the agent LLM host:
 
+**Option A: Using environment variables directly**
+
 ```bash
 source venv/bin/activate
 
-# Load .env and start OpenAI host
-export $(cat .env | grep -v '^#' | xargs)
+# Set your API key directly
+export OPENAI_API_KEY="your_actual_openai_key_here"
 python -m agent --provider openai --port 8000
 
 # Or for Anthropic/Claude:
+# export ANTHROPIC_API_KEY="your_actual_anthropic_key_here"
 # python -m agent --provider anthropic --port 8000
 ```
+
+**Option B: Using .env file with dotenv**
+
+```bash
+source venv/bin/activate
+
+# Load .env and start (requires python-dotenv)
+python -c "from dotenv import load_dotenv; load_dotenv(); import os; os.system('python -m agent --provider openai --port 8000')"
+```
+
+**Option C: Source .env manually**
+
+```bash
+source venv/bin/activate
+
+# Load .env (remove quotes from values first)
+set -a
+source .env
+set +a
+
+python -m agent --provider openai --port 8000
+```
+
+**Note:** The agent host needs `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` environment variable set before starting.
 
 #### 3. Run an Arena simulation
 
@@ -147,7 +181,59 @@ With 10 agents, 5 posts/day, 5 days:
 
 ---
 
-### Architecture
+## Key Features
+
+- ✅ **No try/except blocks** - Clean error propagation using Pydantic validation
+- ✅ **Structured output** - Separate folders for agents, feeds, and recommendations
+- ✅ **Daily snapshots** - Agent states saved after each simulation day
+- ✅ **Recommendation tracking** - Records which feeds were recommended to which agents each day
+- ✅ **Configurable** - All simulation parameters controllable via CLI arguments
+- ✅ **LLM-driven** - Agents make realistic decisions using OpenAI or Anthropic models
+- ✅ **Scalable** - Tested with 10+ agents over multiple days
+- ✅ **Analyzable** - All data saved as JSON for post-simulation analysis
+
+---
+
+## Simulation Flow
+
+### Daily Cycle
+
+Each simulation day follows this pattern:
+
+1. **Morning (Content Creation)**
+   - Each agent creates `post_per_day` posts
+   - Posts are ingested into the recommendation system's global feed pool
+   - Example: 10 agents × 5 posts = 50 new posts per day
+
+2. **Afternoon (Content Discovery)**
+   - Each agent fetches `fetch_per_day` posts from the recommendation system
+   - Recommendation system uses `BalancedStrategy` (exploration + exploitation)
+   - Mappings saved: which feeds were shown to which agent
+
+3. **Decision Making**
+   - LLM analyzes the recommended feeds for each agent
+   - Agent decides: like, reply, follow, or idle
+   - Decision based on agent's personality (bio) and feed content
+
+4. **Action Execution**
+   - Agent executes the chosen action
+   - New content (replies) fed back into the system
+   - Social graph updated (follows)
+   - Engagement signals recorded
+
+5. **Evening (State Persistence)**
+   - Each agent's state saved to `agents/agent_XXX_dayYYY.json`
+   - Includes: following, followers, liked tweets, stats
+
+### After All Days
+
+- All feeds saved to `feeds/all_feeds.json`
+- Recommendation mappings show the complete history of what was shown to whom
+- Final recommendation system state saved with social graph and statistics
+
+---
+
+## Architecture
 
 ```text
 ┌───────────────────────────────────────────┐

@@ -1,234 +1,234 @@
-# Social Arena 实验设计框架
+# Social Arena Experimental Design Framework
 
-## 🎯 实验目标
+## 🎯 Experimental Objectives
 
-通过系统性的实验设计，深入研究社交媒体环境中的关键因素对用户行为、内容传播、推荐效果的影响。
-
----
-
-## 📋 核心研究问题
-
-### 1. **规模效应研究** (Scale Effects)
-- **问题**: 智能体数量如何影响社交网络的形成和信息传播？
-- **假设**: 更多智能体会产生更丰富的社交行为，但也可能导致信息过载
-
-### 2. **活动频率影响** (Activity Frequency Impact)  
-- **问题**: 发帖频率如何影响用户参与度和内容质量？
-- **假设**: 适中的发帖频率能最大化用户参与度
-
-### 3. **时间演化分析** (Temporal Evolution)
-- **问题**: 社交网络的稳定性和行为模式如何随时间演化？
-- **假设**: 初期变化剧烈，后期逐渐稳定
-
-### 4. **推荐算法效果** (Recommendation Algorithm Effectiveness)
-- **问题**: 不同推荐策略对用户满意度和内容多样性的影响？
-- **假设**: 平衡策略优于单一策略
+Through systematic experimental design, conduct in-depth research on how key factors in social media environments affect user behavior, content propagation, and recommendation effectiveness.
 
 ---
 
-## 🧪 详细实验设计
+## 📋 Core Research Questions
 
-### **实验组 A: 规模效应分析**
+### 1. **Scale Effects Research**
+- **Question**: How does the number of agents affect social network formation and information propagation?
+- **Hypothesis**: More agents will produce richer social behavior, but may also lead to information overload
 
-#### A1. 智能体数量对比实验
-```
-实验参数:
-- 智能体数量: [5, 10, 15, 20, 25]
-- 发帖频率: 5条/天 (固定)
-- 模拟天数: 7天 (固定)
-- 获取频率: 10条/天 (固定)
-- 重复次数: 3次
+### 2. **Activity Frequency Impact**  
+- **Question**: How does posting frequency affect user engagement and content quality?
+- **Hypothesis**: Moderate posting frequency maximizes user engagement
 
-测量指标:
-1. 网络密度 = 实际连接数 / 最大可能连接数
-2. 平均聚集系数 = Σ(节点聚集系数) / 节点数
-3. 信息传播速度 = 热门内容扩散时间
-4. 内容多样性 = 独特hashtag数量 / 总hashtag数量
-5. 用户参与度 = 平均互动次数 / 用户数
+### 3. **Temporal Evolution Analysis**
+- **Question**: How do the stability and behavioral patterns of social networks evolve over time?
+- **Hypothesis**: Changes are dramatic initially, then gradually stabilize
 
-分析目标:
-- 找出最优智能体数量区间
-- 识别规模临界点
-- 分析网络密度变化规律
-```
-
-#### A2. 网络连接模式分析
-```
-子实验:
-- A2a: 随机连接 vs 优先连接 (preferential attachment)
-- A2b: 小世界网络 vs 无标度网络对比
-- A2c: 社群结构对信息传播的影响
-
-测量方法:
-- 使用NetworkX计算图论指标
-- 可视化网络拓扑结构
-- 分析连通分量和聚类结构
-```
+### 4. **Recommendation Algorithm Effectiveness**
+- **Question**: How do different recommendation strategies affect user satisfaction and content diversity?
+- **Hypothesis**: Balanced strategies outperform single strategies
 
 ---
 
-### **实验组 B: 活动频率优化**
+## 🧪 Detailed Experimental Design
 
-#### B1. 发帖频率影响实验
+### **Experiment Group A: Scale Effects Analysis**
+
+#### A1. Agent Count Comparison Experiment
 ```
-实验参数:
-- 发帖频率: [1, 3, 5, 8, 12, 15]条/天
-- 智能体数量: 10个 (固定)
-- 模拟天数: 7天 (固定)
-- 获取频率: 10条/天 (固定)
+Experimental Parameters:
+- Agent count: [5, 10, 15, 20, 25]
+- Posting frequency: 5 posts/day (fixed)
+- Simulation days: 7 days (fixed)
+- Fetch frequency: 10 posts/day (fixed)
+- Repetitions: 3 times
 
-测量指标:
-1. 内容质量评分 = LLM生成内容的创新性和相关性
-2. 用户疲劳度 = 重复内容比例
-3. 推荐系统负载 = 处理请求数量和响应时间
-4. 互动质量 = 有意义互动 / 总互动
-5. 信息新鲜度 = 新话题出现频率
+Measurement Metrics:
+1. Network density = Actual connections / Maximum possible connections
+2. Average clustering coefficient = Σ(node clustering coefficient) / node count
+3. Information propagation speed = Hot content diffusion time
+4. Content diversity = Unique hashtags / Total hashtags
+5. User engagement = Average interactions / User count
 
-分析目标:
-- 找出最优发帖频率
-- 识别信息过载临界点
-- 优化推荐系统负载
+Analysis Goals:
+- Find optimal agent count range
+- Identify scale critical points
+- Analyze network density change patterns
 ```
 
-#### B2. 获取频率调优实验
+#### A2. Network Connection Pattern Analysis
 ```
-实验参数:
-- 获取频率: [5, 10, 15, 20, 25]条/天
-- 发帖频率: 5条/天 (固定)
+Sub-experiments:
+- A2a: Random connection vs Preferential attachment
+- A2b: Small-world network vs Scale-free network comparison
+- A2c: Community structure impact on information propagation
 
-测量指标:
-- 内容消费效率 = 阅读完成率
-- 推荐精度 = 用户互动的推荐内容比例
-- 过滤效果 = 低质量内容过滤率
+Measurement Methods:
+- Use NetworkX to calculate graph theory metrics
+- Visualize network topology structure
+- Analyze connected components and clustering structure
 ```
 
 ---
 
-### **实验组 C: 时间演化分析**
+### **Experiment Group B: Activity Frequency Optimization**
 
-#### C1. 长期稳定性实验
+#### B1. Posting Frequency Impact Experiment
 ```
-实验参数:
-- 模拟天数: [3, 7, 14, 21, 30]天
-- 智能体数量: 15个 (固定)
-- 发帖频率: 5条/天 (固定)
+Experimental Parameters:
+- Posting frequency: [1, 3, 5, 8, 12, 15] posts/day
+- Agent count: 10 (fixed)
+- Simulation days: 7 days (fixed)
+- Fetch frequency: 10 posts/day (fixed)
 
-测量指标:
-1. 网络稳定性 = 连接变化速率递减程度
-2. 行为收敛性 = 智能体行为模式相似度
-3. 内容演化 = 话题变化和深度发展
-4. 社群形成 = 稳定群组出现时间
-5. 影响力分布 = 关注者数量分布变化
+Measurement Metrics:
+1. Content quality score = LLM-generated content innovation and relevance
+2. User fatigue = Duplicate content ratio
+3. Recommendation system load = Request count and response time
+4. Interaction quality = Meaningful interactions / Total interactions
+5. Information freshness = New topic emergence frequency
 
-分析方法:
-- 时间序列分析
-- 变化点检测
-- 趋势回归分析
+Analysis Goals:
+- Find optimal posting frequency
+- Identify information overload threshold
+- Optimize recommendation system load
 ```
 
-#### C2. 动态适应性测试
+#### B2. Fetch Frequency Tuning Experiment
 ```
-场景设计:
-- C2a: 突发事件响应 (注入热门话题)
-- C2b: 用户流失模拟 (随机移除智能体)
-- C2c: 新用户加入 (中途添加智能体)
+Experimental Parameters:
+- Fetch frequency: [5, 10, 15, 20, 25] posts/day
+- Posting frequency: 5 posts/day (fixed)
 
-测量指标:
-- 系统恢复时间
-- 适应能力评分
-- 网络韧性指标
+Measurement Metrics:
+- Content consumption efficiency = Reading completion rate
+- Recommendation accuracy = User-interacted recommended content ratio
+- Filtering effectiveness = Low-quality content filtering rate
 ```
 
 ---
 
-### **实验组 D: 推荐算法对比**
+### **Experiment Group C: Temporal Evolution Analysis**
 
-#### D1. 算法策略对比
+#### C1. Long-term Stability Experiment
 ```
-算法类型:
-1. 基于内容 (Content-Based)
-   - 文本相似度匹配
-   - 话题标签推荐
+Experimental Parameters:
+- Simulation days: [3, 7, 14, 21, 30] days
+- Agent count: 15 (fixed)
+- Posting frequency: 5 posts/day (fixed)
+
+Measurement Metrics:
+1. Network stability = Connection change rate decrease degree
+2. Behavioral convergence = Agent behavior pattern similarity
+3. Content evolution = Topic changes and depth development
+4. Community formation = Stable group emergence time
+5. Influence distribution = Follower count distribution changes
+
+Analysis Methods:
+- Time series analysis
+- Change point detection
+- Trend regression analysis
+```
+
+#### C2. Dynamic Adaptability Testing
+```
+Scenario Design:
+- C2a: Emergency response (inject trending topics)
+- C2b: User churn simulation (randomly remove agents)
+- C2c: New user joining (add agents midway)
+
+Measurement Metrics:
+- System recovery time
+- Adaptability score
+- Network resilience metrics
+```
+
+---
+
+### **Experiment Group D: Recommendation Algorithm Comparison**
+
+#### D1. Algorithm Strategy Comparison
+```
+Algorithm Types:
+1. Content-Based
+   - Text similarity matching
+   - Topic tag recommendation
    
-2. 协同过滤 (Collaborative Filtering)
-   - 用户行为相似性
-   - 物品协同过滤
+2. Collaborative Filtering
+   - User behavior similarity
+   - Item collaborative filtering
    
-3. 混合策略 (Hybrid)
-   - 当前的BalancedStrategy
-   - 自定义加权组合
+3. Hybrid Strategy
+   - Current BalancedStrategy
+   - Custom weighted combination
    
-4. 随机推荐 (Random Baseline)
-   - 随机选择内容
-   - 作为基准对照
+4. Random Recommendation (Random Baseline)
+   - Random content selection
+   - As benchmark control
 
-测量指标:
-1. 点击率 (CTR) = 被互动推荐 / 总推荐数
-2. 多样性分数 = 推荐内容类别分布熵
-3. 新颖性 = 推荐少见内容比例
-4. 覆盖率 = 被推荐内容 / 总内容
-5. 用户满意度 = 长期互动增长率
+Measurement Metrics:
+1. Click-through rate (CTR) = Interacted recommendations / Total recommendations
+2. Diversity score = Recommendation content category distribution entropy
+3. Novelty = Rare content recommendation ratio
+4. Coverage = Recommended content / Total content
+5. User satisfaction = Long-term interaction growth rate
 ```
 
-#### D2. 个性化程度测试
+#### D2. Personalization Level Testing
 ```
-实验设计:
-- 不同个性化水平: [无, 低, 中, 高]
-- 测量用户行为差异化程度
-- 评估推荐精度和满意度平衡
+Experimental Design:
+- Different personalization levels: [None, Low, Medium, High]
+- Measure user behavior differentiation degree
+- Evaluate recommendation accuracy and satisfaction balance
 ```
 
 ---
 
-### **实验组 E: 高级场景测试**
+### **Experiment Group E: Advanced Scenario Testing**
 
-#### E1. 社交影响力研究
+#### E1. Social Influence Research
 ```
-场景设置:
-- E1a: 引入"网红"角色 (高初始粉丝数)
-- E1b: 意见领袖识别和影响传播
-- E1c: 信息病毒式传播模拟
+Scenario Setup:
+- E1a: Introduce "influencer" roles (high initial follower count)
+- E1b: Opinion leader identification and influence propagation
+- E1c: Viral information propagation simulation
 
-测量指标:
-- 影响力传播范围和速度
-- 内容传播深度
-- 网络中心性变化
-```
-
-#### E2. 内容多样性实验
-```
-内容类型:
-- 科技类内容
-- 娱乐类内容  
-- 教育类内容
-- 混合类内容
-
-测量目标:
-- 不同类型内容的传播特性
-- 用户偏好形成和演化
-- 过滤泡沫现象
+Measurement Metrics:
+- Influence propagation range and speed
+- Content propagation depth
+- Network centrality changes
 ```
 
-#### E3. 对抗性测试
+#### E2. Content Diversity Experiment
 ```
-对抗场景:
-- 垃圾内容注入
-- 恶意用户行为
-- 推荐系统攻击
+Content Types:
+- Technology content
+- Entertainment content  
+- Educational content
+- Mixed content
 
-韧性测试:
-- 系统自我修复能力
-- 异常检测效果
-- 内容质量控制
+Measurement Goals:
+- Propagation characteristics of different content types
+- User preference formation and evolution
+- Filter bubble phenomenon
+```
+
+#### E3. Adversarial Testing
+```
+Adversarial Scenarios:
+- Spam content injection
+- Malicious user behavior
+- Recommendation system attacks
+
+Resilience Testing:
+- System self-healing capability
+- Anomaly detection effectiveness
+- Content quality control
 ```
 
 ---
 
-## 📊 数据收集和分析框架
+## 📊 Data Collection and Analysis Framework
 
-### **数据收集标准**
+### **Data Collection Standards**
 ```python
-# 每次实验必须收集的基础数据
+# Basic data that must be collected for each experiment
 basic_metrics = {
     'simulation_params': {
         'n_agents': int,
@@ -264,91 +264,91 @@ basic_metrics = {
 }
 ```
 
-### **统计分析方法**
-1. **描述性统计**: 均值、中位数、标准差、分位数
-2. **假设检验**: t检验、ANOVA、卡方检验  
-3. **回归分析**: 线性回归、逻辑回归、时间序列回归
-4. **聚类分析**: K-means、层次聚类、DBSCAN
-5. **因果推断**: Granger因果检验、倾向得分匹配
+### **Statistical Analysis Methods**
+1. **Descriptive Statistics**: Mean, median, standard deviation, quantiles
+2. **Hypothesis Testing**: t-test, ANOVA, chi-square test  
+3. **Regression Analysis**: Linear regression, logistic regression, time series regression
+4. **Cluster Analysis**: K-means, hierarchical clustering, DBSCAN
+5. **Causal Inference**: Granger causality test, propensity score matching
 
-### **可视化标准**
-- 时间序列图: 显示指标随时间变化
-- 散点图矩阵: 显示变量间相关性
-- 网络图: 显示社交关系结构  
-- 热力图: 显示推荐效果分布
-- 箱线图: 显示实验组间差异
-
----
-
-## 🔄 实验执行流程
-
-### **阶段1: 预实验 (Pilot Study)**
-```
-目标: 验证实验设计可行性
-时间: 1-2天
-规模: 小规模参数测试
-产出: 优化后的实验参数和指标
-```
-
-### **阶段2: 主实验 (Main Experiment)**
-```
-执行顺序:
-1. 基础对比实验 (A1, B1)
-2. 深度分析实验 (A2, B2, C1) 
-3. 高级场景实验 (C2, D1, D2, E系列)
-
-每个实验:
-- 运行3次取平均值
-- 记录详细日志
-- 实时监控异常
-```
-
-### **阶段3: 结果分析 (Analysis)**
-```
-分析步骤:
-1. 数据清洗和质量检查
-2. 描述性统计分析
-3. 假设检验和显著性测试
-4. 深度洞察挖掘
-5. 结论和建议生成
-```
-
-### **阶段4: 报告生成 (Reporting)**
-```
-报告内容:
-1. 执行摘要
-2. 实验设计说明
-3. 结果可视化展示
-4. 统计分析结果
-5. 洞察和建议
-6. 未来研究方向
-```
+### **Visualization Standards**
+- Time series plots: Show metric changes over time
+- Scatter plot matrix: Show correlations between variables
+- Network graphs: Show social relationship structure  
+- Heatmaps: Show recommendation effectiveness distribution
+- Box plots: Show differences between experimental groups
 
 ---
 
-## 🎯 预期结果和应用
+## 🔄 Experiment Execution Process
 
-### **学术价值**
-- 社交媒体行为建模的新方法
-- 推荐系统在复杂环境下的效果评估
-- 人工智能在社交网络中的行为模式研究
+### **Phase 1: Pilot Study**
+```
+Goal: Validate experimental design feasibility
+Time: 1-2 days
+Scale: Small-scale parameter testing
+Output: Optimized experimental parameters and metrics
+```
 
-### **实用价值**  
-- 社交平台参数优化指导
-- 推荐算法改进方案
-- 内容策略制定依据
+### **Phase 2: Main Experiment**
+```
+Execution Order:
+1. Basic comparison experiments (A1, B1)
+2. In-depth analysis experiments (A2, B2, C1) 
+3. Advanced scenario experiments (C2, D1, D2, E series)
 
-### **技术创新**
-- AI驱动的社交模拟框架
-- 大规模社交行为数据生成
-- 实时动态网络分析工具
+For each experiment:
+- Run 3 times and average results
+- Record detailed logs
+- Monitor anomalies in real-time
+```
+
+### **Phase 3: Analysis**
+```
+Analysis Steps:
+1. Data cleaning and quality check
+2. Descriptive statistical analysis
+3. Hypothesis testing and significance testing
+4. Deep insight mining
+5. Conclusion and recommendation generation
+```
+
+### **Phase 4: Reporting**
+```
+Report Contents:
+1. Executive summary
+2. Experimental design description
+3. Results visualization
+4. Statistical analysis results
+5. Insights and recommendations
+6. Future research directions
+```
 
 ---
 
-## 🚀 下一步行动计划
+## 🎯 Expected Results and Applications
 
-1. **立即执行**: 运行交互式可视化仪表板
-2. **本周目标**: 完成A1和B1基础实验
-3. **本月目标**: 完成所有主要实验组
-4. **长期目标**: 发布研究论文和开源框架
+### **Academic Value**
+- New methods for social media behavior modeling
+- Recommendation system effectiveness evaluation in complex environments
+- AI behavioral pattern research in social networks
+
+### **Practical Value**  
+- Social platform parameter optimization guidance
+- Recommendation algorithm improvement solutions
+- Content strategy formulation basis
+
+### **Technical Innovation**
+- AI-driven social simulation framework
+- Large-scale social behavior data generation
+- Real-time dynamic network analysis tools
+
+---
+
+## 🚀 Next Action Plan
+
+1. **Immediate Execution**: Run interactive visualization dashboard
+2. **This Week Goal**: Complete A1 and B1 basic experiments
+3. **This Month Goal**: Complete all major experiment groups
+4. **Long-term Goal**: Publish research papers and open-source framework
 

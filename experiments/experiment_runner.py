@@ -18,10 +18,10 @@ class ExperimentRunner:
         self.results_base_path = Path("experiment_results")
         self.results_base_path.mkdir(exist_ok=True)
         
-        # 实验配置
+        # Experiment configuration
         self.experiments = {
             "A1_scale_effects": {
-                "description": "智能体数量对社交网络影响的研究",
+                "description": "Study of agent count impact on social networks",
                 "params": [
                     {"n_agents": 5, "posts_per_day": 5, "days": 7, "fetch_per_day": 10},
                     {"n_agents": 10, "posts_per_day": 5, "days": 7, "fetch_per_day": 10},
@@ -32,7 +32,7 @@ class ExperimentRunner:
                 "repeat": 3
             },
             "B1_posting_frequency": {
-                "description": "发帖频率对用户参与度和内容质量的影响",
+                "description": "Impact of posting frequency on user engagement and content quality",
                 "params": [
                     {"n_agents": 10, "posts_per_day": 1, "days": 7, "fetch_per_day": 10},
                     {"n_agents": 10, "posts_per_day": 3, "days": 7, "fetch_per_day": 10},
@@ -43,7 +43,7 @@ class ExperimentRunner:
                 "repeat": 3
             },
             "C1_temporal_evolution": {
-                "description": "社交网络长期演化和稳定性分析",
+                "description": "Long-term evolution and stability analysis of social networks",
                 "params": [
                     {"n_agents": 15, "posts_per_day": 5, "days": 3, "fetch_per_day": 10},
                     {"n_agents": 15, "posts_per_day": 5, "days": 7, "fetch_per_day": 10},
@@ -55,11 +55,11 @@ class ExperimentRunner:
         }
     
     def run_single_simulation(self, params, output_dir):
-        """运行单次模拟"""
-        print(f"🚀 开始模拟: {params}")
-        print(f"📁 输出目录: {output_dir}")
+        """Run single simulation"""
+        print(f"🚀 Starting simulation: {params}")
+        print(f"📁 Output directory: {output_dir}")
         
-        # 构建命令
+        # Build command
         cmd = [
             "python", "arena.py",
             "-n_of_agents", str(params["n_agents"]),
@@ -69,7 +69,7 @@ class ExperimentRunner:
             "-output", str(output_dir)
         ]
         
-        # 执行命令
+        # Execute command
         start_time = time.time()
         try:
             result = subprocess.run(
@@ -77,14 +77,14 @@ class ExperimentRunner:
                 cwd=self.arena_path,
                 capture_output=True,
                 text=True,
-                timeout=3600  # 1小时超时
+                timeout=3600  # 1 hour timeout
             )
             
             end_time = time.time()
             duration = end_time - start_time
             
             if result.returncode == 0:
-                print(f"✅ 模拟成功完成，耗时: {duration:.2f}秒")
+                print(f"✅ Simulation completed successfully, duration: {duration:.2f}s")
                 return {
                     "success": True,
                     "duration": duration,
@@ -92,7 +92,7 @@ class ExperimentRunner:
                     "error": result.stderr
                 }
             else:
-                print(f"❌ 模拟失败: {result.stderr}")
+                print(f"❌ Simulation failed: {result.stderr}")
                 return {
                     "success": False,
                     "duration": duration,
@@ -101,37 +101,37 @@ class ExperimentRunner:
                 }
                 
         except subprocess.TimeoutExpired:
-            print("⏰ 模拟超时")
+            print("⏰ Simulation timeout")
             return {
                 "success": False,
                 "duration": 3600,
                 "error": "Simulation timeout"
             }
         except Exception as e:
-            print(f"🔥 执行异常: {str(e)}")
+            print(f"🔥 Execution exception: {str(e)}")
             return {
                 "success": False,
                 "error": str(e)
             }
     
     def run_experiment_group(self, experiment_name):
-        """运行实验组"""
+        """Run experiment group"""
         if experiment_name not in self.experiments:
-            print(f"❌ 实验 {experiment_name} 不存在")
+            print(f"❌ Experiment {experiment_name} does not exist")
             return
         
         experiment = self.experiments[experiment_name]
-        print(f"\n🧪 开始实验组: {experiment_name}")
-        print(f"📄 描述: {experiment['description']}")
-        print(f"🔢 参数组合数: {len(experiment['params'])}")
-        print(f"🔄 重复次数: {experiment['repeat']}")
+        print(f"\n🧪 Starting experiment group: {experiment_name}")
+        print(f"📄 Description: {experiment['description']}")
+        print(f"🔢 Parameter combinations: {len(experiment['params'])}")
+        print(f"🔄 Repetitions: {experiment['repeat']}")
         
-        # 创建实验目录
+        # Create experiment directory
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         experiment_dir = self.results_base_path / f"{experiment_name}_{timestamp}"
         experiment_dir.mkdir(exist_ok=True)
         
-        # 保存实验配置
+        # Save experiment configuration
         with open(experiment_dir / "experiment_config.json", "w") as f:
             json.dump(experiment, f, indent=2)
         
@@ -142,17 +142,17 @@ class ExperimentRunner:
         for param_idx, params in enumerate(experiment['params']):
             for repeat_idx in range(experiment['repeat']):
                 current_run += 1
-                print(f"\n📊 进度: {current_run}/{total_runs}")
-                print(f"🎯 参数组 {param_idx+1}, 重复 {repeat_idx+1}")
+                print(f"\n📊 Progress: {current_run}/{total_runs}")
+                print(f"🎯 Parameter set {param_idx+1}, repetition {repeat_idx+1}")
                 
-                # 创建本次运行的输出目录
+                # Create output directory for this run
                 run_name = f"param{param_idx+1}_run{repeat_idx+1}"
                 run_output_dir = experiment_dir / run_name
                 
-                # 运行模拟
+                # Run simulation
                 result = self.run_single_simulation(params, run_output_dir)
                 
-                # 记录结果
+                # Record result
                 run_result = {
                     "experiment_name": experiment_name,
                     "param_index": param_idx,
@@ -165,44 +165,44 @@ class ExperimentRunner:
                 
                 results.append(run_result)
                 
-                # 保存中间结果
+                # Save intermediate results
                 with open(experiment_dir / "results.json", "w") as f:
                     json.dump(results, f, indent=2)
                 
-                # 如果失败，询问是否继续
+                # If failed, ask whether to continue
                 if not result["success"]:
-                    print("⚠️  本次运行失败，是否继续？(y/n): ", end="")
+                    print("⚠️  This run failed, continue anyway? (y/n): ", end="")
                     # response = input().lower()
                     # if response != 'y':
-                    #     print("🛑 实验中止")
+                    #     print("🛑 Experiment aborted")
                     #     return results
-                    print("y (自动继续)")
+                    print("y (auto-continue)")
                 
-                # 短暂休息，避免系统过载
+                # Brief pause to avoid system overload
                 time.sleep(5)
         
-        print(f"\n🎉 实验组 {experiment_name} 完成！")
-        print(f"📁 结果保存在: {experiment_dir}")
+        print(f"\n🎉 Experiment group {experiment_name} completed!")
+        print(f"📁 Results saved in: {experiment_dir}")
         
-        # 生成实验报告
+        # Generate experiment report
         self.generate_experiment_report(experiment_dir, results)
         
         return results
     
     def generate_experiment_report(self, experiment_dir, results):
-        """生成实验报告"""
-        report_content = f"""# 实验报告
+        """Generate experiment report"""
+        report_content = f"""# Experiment Report
         
-## 实验信息
-- 实验时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-- 总运行次数: {len(results)}
-- 成功次数: {sum(1 for r in results if r['result']['success'])}
-- 失败次数: {sum(1 for r in results if not r['result']['success'])}
+## Experiment Information
+- Experiment time: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+- Total runs: {len(results)}
+- Successful runs: {sum(1 for r in results if r['result']['success'])}
+- Failed runs: {sum(1 for r in results if not r['result']['success'])}
 
-## 成功率统计
+## Success Rate Statistics
 """
         
-        # 按参数组统计成功率
+        # Calculate success rate by parameter group
         param_groups = {}
         for result in results:
             param_idx = result['param_index']
@@ -215,11 +215,11 @@ class ExperimentRunner:
         
         for param_idx, stats in param_groups.items():
             success_rate = stats['success'] / stats['total'] * 100
-            report_content += f"\n### 参数组 {param_idx + 1}\n"
-            report_content += f"- 参数: {stats['params']}\n"
-            report_content += f"- 成功率: {success_rate:.1f}% ({stats['success']}/{stats['total']})\n"
+            report_content += f"\n### Parameter Set {param_idx + 1}\n"
+            report_content += f"- Parameters: {stats['params']}\n"
+            report_content += f"- Success rate: {success_rate:.1f}% ({stats['success']}/{stats['total']})\n"
         
-        # 执行时间统计
+        # Execution time statistics
         successful_runs = [r for r in results if r['result']['success']]
         if successful_runs:
             durations = [r['result']['duration'] for r in successful_runs]
@@ -227,78 +227,78 @@ class ExperimentRunner:
             min_duration = min(durations)
             max_duration = max(durations)
             
-            report_content += f"\n## 执行时间统计\n"
-            report_content += f"- 平均执行时间: {avg_duration:.2f}秒\n"
-            report_content += f"- 最短执行时间: {min_duration:.2f}秒\n"
-            report_content += f"- 最长执行时间: {max_duration:.2f}秒\n"
+            report_content += f"\n## Execution Time Statistics\n"
+            report_content += f"- Average execution time: {avg_duration:.2f}s\n"
+            report_content += f"- Minimum execution time: {min_duration:.2f}s\n"
+            report_content += f"- Maximum execution time: {max_duration:.2f}s\n"
         
-        # 保存报告
+        # Save report
         with open(experiment_dir / "report.md", "w", encoding='utf-8') as f:
             f.write(report_content)
         
-        print(f"📊 实验报告已生成: {experiment_dir}/report.md")
+        print(f"📊 Experiment report generated: {experiment_dir}/report.md")
     
     def run_all_experiments(self):
-        """运行所有实验"""
-        print("🚀 开始运行所有实验组...")
+        """Run all experiments"""
+        print("🚀 Starting all experiment groups...")
         
         for experiment_name in self.experiments.keys():
             print(f"\n{'='*60}")
             self.run_experiment_group(experiment_name)
-            print("⏱️  等待10秒后开始下一个实验组...")
+            print("⏱️  Waiting 10 seconds before starting next experiment group...")
             time.sleep(10)
         
-        print("\n🎊 所有实验完成！")
+        print("\n🎊 All experiments completed!")
     
     def list_experiments(self):
-        """列出所有可用实验"""
-        print("📋 可用实验列表:")
+        """List all available experiments"""
+        print("📋 Available experiments:")
         for name, config in self.experiments.items():
             print(f"\n🧪 {name}")
             print(f"   📄 {config['description']}")
-            print(f"   🔢 参数组合: {len(config['params'])}")
-            print(f"   🔄 重复次数: {config['repeat']}")
-            print(f"   ⏱️  预计时间: {len(config['params']) * config['repeat'] * 2}分钟")
+            print(f"   🔢 Parameter combinations: {len(config['params'])}")
+            print(f"   🔄 Repetitions: {config['repeat']}")
+            print(f"   ⏱️  Estimated time: {len(config['params']) * config['repeat'] * 2} minutes")
 
 def main():
-    """主程序"""
-    print("🎯 Social Arena 实验运行器")
+    """Main program"""
+    print("🎯 Social Arena Experiment Runner")
     print("="*50)
     
     runner = ExperimentRunner()
     
-    # 检查Arena目录
+    # Check Arena directory
     if not runner.arena_path.exists():
-        print(f"❌ Arena目录不存在: {runner.arena_path}")
+        print(f"❌ Arena directory does not exist: {runner.arena_path}")
         return
     
-    print("📋 请选择要执行的操作:")
-    print("1. 查看所有实验")
-    print("2. 运行单个实验组")
-    print("3. 运行所有实验")
-    print("4. 退出")
+    print("📋 Please select an operation:")
+    print("1. View all experiments")
+    print("2. Run single experiment group")
+    print("3. Run all experiments")
+    print("4. Exit")
     
-    choice = input("\n请输入选择 (1-4): ").strip()
+    choice = input("\nPlease enter choice (1-4): ").strip()
     
     if choice == "1":
         runner.list_experiments()
     
     elif choice == "2":
         runner.list_experiments()
-        experiment_name = input("\n请输入实验名称: ").strip()
+        experiment_name = input("\nPlease enter experiment name: ").strip()
         runner.run_experiment_group(experiment_name)
     
     elif choice == "3":
-        print("⚠️  这将运行所有实验，可能需要数小时时间")
-        confirm = input("确认继续？(y/n): ").strip().lower()
+        print("⚠️  This will run all experiments, which may take several hours")
+        confirm = input("Confirm to continue? (y/n): ").strip().lower()
         if confirm == 'y':
             runner.run_all_experiments()
     
     elif choice == "4":
-        print("👋 再见！")
+        print("👋 Goodbye!")
     
     else:
-        print("❌ 无效选择")
+        print("❌ Invalid choice")
 
 if __name__ == "__main__":
     main()
